@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{05b5314c-6eef-4bab-81b0-22141dca3fa3}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	bBool : BOOL := TRUE;
+	
+	eEventType1 : E_EventType := E_EventType.Alarm;
+	eEventSeverity1 : TcEventSeverity := TcEventSeverity.Critical;
+	nEventIdentity1 : UDINT := 0023654;
+	sEventText1 : STRING(255) := '/!\ Scary event /!\';
+	
+	CsvPersistentEventStorage : FB_CsvPersistentEventStorage;
+	EventLogger : EventLogger(CsvPersistentEventStorage);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*
+IF NOT bBool THEN
+	UpdateEventTimestampWithSystemTime(stEvent := stFirstInstance);
+	bBool := TRUE;
+END_IF
+*)
+
+IF bBool THEN
+	EventLogger.AddEvent(eEventType1, eEventSeverity1, nEventIdentity1, sEventText1);
+	
+	bBool := FALSE;
+END_IF
+
+CsvPersistentEventStorage();
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="26" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="45" Count="1" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="33" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

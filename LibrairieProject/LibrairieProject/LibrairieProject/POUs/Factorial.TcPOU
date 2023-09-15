@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Factorial" Id="{b259693a-bead-4e2d-b804-d4b6937b5f0e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION Factorial : ULINT
+VAR_INPUT
+	n : ULINT;
+END_VAR
+VAR
+	nReturnValue : ULINT;
+	i: ULINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[nReturnValue := 1;
+FOR i := 1 TO n BY 1 DO
+	nReturnValue := nReturnValue * i;
+END_FOR
+Factorial := nReturnValue;]]></ST>
+    </Implementation>
+    <LineIds Name="Factorial">
+      <LineId Id="7" Count="0" />
+      <LineId Id="11" Count="3" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

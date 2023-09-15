@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{bbfefc72-33fb-4904-9bd7-b243dcfdea99}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	nFactorial : ULINT;
+	Profiler : PROFILER;
+	ProfilerResult : PROFILERSTRUCT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Profiler(START := TRUE, RESET := FALSE);
+Factorial(n := nFactorial);
+Profiler(START := FALSE);
+ProfilerResult := Profiler.DATA;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="2" Count="0" />
+      <LineId Id="9" Count="1" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_EventBuffer" Id="{376bb73c-8cf7-4495-bc60-f00000825dae}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EventBuffer
+VAR
+    MemRingBuffer : FB_MemRingBuffer;
+	BufferArray : ARRAY[0..MAX_BUFFER_SIZE] OF BYTE;
+END_VAR
+VAR CONSTANT
+	SIZE_OF_ST_EVENT : UDINT := SIZEOF(ST_Event);
+	MAX_NUMBER_OF_ST_EVENTS : UDINT := 5;
+	MAX_BUFFER_SIZE : UDINT := SIZE_OF_ST_EVENT * MAX_NUMBER_OF_ST_EVENTS + SIZEOF(MemRingBuffer);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="AddEvent" Id="{9ae709c7-2660-4275-8f01-69159fe1f889}">
+      <Declaration><![CDATA[METHOD PUBLIC AddEvent
+VAR_INPUT
+	stEvent : REFERENCE TO ST_Event;
+END_VAR
+VAR_OUTPUT
+	bError : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[MemRingBuffer.A_AddTail(pWrite := ADR(stEvent), 
+						cbWrite := SIZEOF(stEvent), 
+						pBuffer := ADR(BufferArray), 
+						cbBuffer := SIZEOF(BufferArray));
+						
+bError := NOT MemRingBuffer.bOk;
+	]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetAndRemoveEvent" Id="{2057184e-7bd0-4432-9336-243d9737a077}">
+      <Declaration><![CDATA[METHOD PUBLIC GetAndRemoveEvent
+VAR_OUTPUT
+	stEvent : ST_Event;
+	bError : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[MemRingBuffer.A_RemoveHead(pRead := ADR(stEvent), cbRead := SIZEOF(stEvent), pBuffer := ADR(BufferArray), cbBuffer := SIZEOF(BufferArray));
+						
+bError := NOT MemRingBuffer.bOk;
+	]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_EventBuffer">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EventBuffer.AddEvent">
+      <LineId Id="5" Count="0" />
+      <LineId Id="16" Count="2" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EventBuffer.GetAndRemoveEvent">
+      <LineId Id="8" Count="0" />
+      <LineId Id="12" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
